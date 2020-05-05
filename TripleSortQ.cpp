@@ -1,37 +1,39 @@
 #include <iostream>
-#include <unordered_map>
+#include<unordered_map>
 #include<algorithm>
 #include<utility>
 #include<vector>
+typedef long long int ll;
 using namespace std;
 int main() 
 {
   int t;cin>>t;
   while(t>0)
   {
-    int n,limit;cin>>n>>limit;
-    int a[n],s[n];
-    int shifts=0;
-    unordered_map<int,int> nos;
-    vector<int> moves;
+    ll n,limit;cin>>n>>limit;
+    ll a[n],s[n];
+    ll shifts=0;
+    unordered_map<ll,ll> nos;
+    vector<ll> moves;
+    bool np=true;
 
-    for(int i=0;i<n;i++)
+    for(ll i=0;i<n;i++)
     {
       cin>>a[i];
       s[i]=a[i];
-      nos.insert(pair<int,int>(a[i],i));
+      nos.insert(pair<ll,ll>(a[i],i));
     }
 
     sort(s,s+n);
     
-    for(int p=0;p<n;p++)
+    for(ll p=0;p<n;p++)
     {
       
       if(a[p]!=s[p])
       {
-        int i=p;
-        int j=nos.find(s[i])->second;
-        int k=nos.find(s[j])->second;
+        ll i=p;
+        ll j=nos.find(s[i])->second;
+        ll k=nos.find(s[j])->second;
 
         if(i<k&&k<j)
         {
@@ -45,9 +47,9 @@ int main()
         }
         else if(i<j&&j<k) 
         {
-          nos.find(a[i])->second=j;
-          nos.find(a[j])->second=k;
-          nos.find(a[k])->second=i;
+          nos.find(a[i])->second=k;
+          nos.find(a[k])->second=j;
+          nos.find(a[j])->second=i;
 
           swap(a[i],a[j]);
           swap(a[j],a[k]);
@@ -72,7 +74,9 @@ int main()
           
           if(k==n)
           {
-            cout<<-1;break;
+            cout<<-1<<"\n";
+            np=false;
+            break;
           }
           
            if(i<k&&k<j)
@@ -80,6 +84,7 @@ int main()
           nos.find(a[i])->second=k;
           nos.find(a[k])->second=j;
           nos.find(a[j])->second=i;
+
           swap(a[k],a[j]);
           swap(a[i],a[k]);shifts++;
 
@@ -87,9 +92,9 @@ int main()
         }
         else if(i<j&&j<k) 
         {
-          nos.find(a[i])->second=j;
-          nos.find(a[j])->second=k;
-          nos.find(a[k])->second=i;
+          nos.find(a[i])->second=k;
+          nos.find(a[k])->second=j;
+          nos.find(a[j])->second=i;
 
           swap(a[i],a[j]);
           swap(a[j],a[k]);
@@ -107,20 +112,25 @@ int main()
         }
 
         
-      if(shifts>limit) {cout<<-1<<"\n";break;}
+      if(shifts>limit) {cout<<-1<<"\n";np=false;break;}
       }
     }
     
-    for(int i=0;i<n;i++) cout<<a[i]<<" ";
-    
+      if(np)
+    {
+    	cout<<shifts<<"\n";
       for(auto it=moves.begin();it!=moves.end();it++)
       {
-        cout<<*it<<" ";
+        cout<<*it+1<<" ";
         it++;
-        cout<<*it<<" ";
+        cout<<*it+1<<" ";
         it++;
-        cout<<*it<<" "<<"\n";
+        cout<<*it+1<<" "<<"\n";
       }
+      
+      }
+
+      cout<<"\n";
     
     t--;
   }
